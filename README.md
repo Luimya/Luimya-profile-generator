@@ -1,46 +1,13 @@
-<h1 align="center">Hi, I'm Luimya 👋</h1>
+# Private Profile Generator
 
-<p align="center">Welcome to my little corner of GitHub.</p>
+This private repository contains the generator code and historical versions of the Luimya GitHub profile.
 
-<p align="center">
-  <a href="https://github.com/Luimya?tab=repositories">Repositories</a>
-  &nbsp; · &nbsp;
-  <a href="https://github.com/Luimya?tab=stars">Stars</a>
-</p>
+Public display: https://github.com/Luimya
 
-<div align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Luimya&amp;theme=tokyonight" width="820" alt="Luimya's GitHub contribution overview" />
-</div>
+Public repository: https://github.com/Luimya/Luimya
 
-## Languages
+The workflow generates horizontal language charts and contribution-snake animations, then publishes only four SVG assets to the public repository. Generation code and workflow logs remain private.
 
-<div align="center">
-  <img src="assets/languages-by-repo.svg" width="400" alt="Top languages by repository, shown as horizontal bars" />
-  <img src="assets/languages-by-commit.svg" width="400" alt="Top languages by commit, shown as horizontal bars" />
-</div>
+The scheduled refresh runs at 03:23 UTC (12:23 Japan time). For a manual refresh, select **Update public profile visuals** in Actions and use **Run workflow**.
 
-## Activity
-
-<div align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=Luimya&amp;theme=tokyonight" width="400" alt="GitHub activity statistics" />
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=Luimya&amp;theme=tokyonight&amp;utcOffset=9" width="400" alt="Commits by time of day, UTC+9" />
-</div>
-
-## Visits
-
-<div align="center">
-  <img src="https://count.getloli.com/@Luimya-github?theme=moebooru" width="400" alt="Profile visit counter" />
-</div>
-
-## Contribution Snake
-
-<div align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/github-contribution-grid-snake-dark.svg" />
-    <source media="(prefers-color-scheme: light)" srcset="assets/github-contribution-grid-snake.svg" />
-    <img src="assets/github-contribution-grid-snake.svg" width="820" alt="Luimya's contribution snake animation" />
-  </picture>
-</div>
-
-<!-- Layout inspired by https://github.com/1cyberlangke1/1cyberlangke1 -->
-<!-- Components: vn7n24fzkq/github-profile-summary-cards, journey-ad/Moe-Counter, Platane/snk -->
+`PROFILE_DEPLOY_KEY` is an Actions secret containing the encrypted deploy key for the public repository. `PROFILE_KEY_PASSPHRASE` is its runtime unlocking secret. The key is scoped to that repository. Never commit either secret or include them in backup packages. Local unlocking data uses Windows DPAPI rather than a plaintext passphrase file.
