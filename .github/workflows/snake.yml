@@ -1,58 +1,78 @@
-name: Update profile visuals
+name: Update public profile visuals
 
 on:
   workflow_dispatch:
   schedule:
     - cron: '23 3 * * *'
-  push:
-    paths:
-      - '.github/workflows/snake.yml'
-      - 'README.md'
-      - 'scripts/update-language-cards.py'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  group: profile-visuals
+  group: public-profile-visuals
   cancel-in-progress: false
 
 jobs:
-  generate:
+  publish:
     if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Check out the default branch
+      - name: Check out the private generator
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.repository.default_branch }}
+          path: generator
+          persist-credentials: false
+
+      - name: Read the public display repository
+        run: git clone --depth 1 --branch main https://github.com/Luimya/Luimya.git public-profile
 
       - name: Generate horizontal language charts
-        run: python3 scripts/update-language-cards.py --username "$PROFILE_USERNAME"
+        run: python3 generator/scripts/update-language-cards.py --username "$PROFILE_USERNAME" --output public-profile/assets
         env:
           PROFILE_USERNAME: ${{ github.repository_owner }}
 
-      - name: Generate light and dark animations
+      - name: Generate light and dark contribution animations
         uses: Platane/snk/svg-only@v3
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
-            assets/github-contribution-grid-snake.svg
-            assets/github-contribution-grid-snake-dark.svg?palette=github-dark
+            public-profile/assets/github-contribution-grid-snake.svg
+            public-profile/assets/github-contribution-grid-snake-dark.svg?palette=github-dark
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Save generated profile visuals
+      - name: Publish generated SVGs only
+        working-directory: public-profile
         shell: bash
+        env:
+          PROFILE_DEPLOY_KEY: ${{ secrets.PROFILE_DEPLOY_KEY }}
+          PROFILE_KEY_PASSPHRASE: ${{ secrets.PROFILE_KEY_PASSPHRASE }}
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/languages-by-repo.svg assets/languages-by-commit.svg assets/github-contribution-grid-snake.svg assets/github-contribution-grid-snake-dark.svg
+          git add -- assets/languages-by-repo.svg assets/languages-by-commit.svg assets/github-contribution-grid-snake.svg assets/github-contribution-grid-snake-dark.svg
           if git diff --cached --quiet; then
             echo 'Profile visuals are already current.'
             exit 0
           fi
-          git commit -m 'chore: update profile visuals'
+          git commit -m 'chore: refresh profile visuals'
+          key_file=$(mktemp "$RUNNER_TEMP/profile-key.XXXXXX")
+          askpass_file=$(mktemp "$RUNNER_TEMP/profile-askpass.XXXXXX")
+          hosts_file=$(mktemp "$RUNNER_TEMP/profile-hosts.XXXXXX")
+          trap 'rm -f "$key_file" "$askpass_file" "$hosts_file"' EXIT
+          chmod 600 "$key_file"
+          printf '%s\n' "$PROFILE_DEPLOY_KEY" > "$key_file"
+          printf '%s\n' 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > "$hosts_file"
+          cat > "$askpass_file" <<'ASKPASS'
+          #!/bin/sh
+          printf '%s\n' "$PROFILE_KEY_PASSPHRASE"
+          ASKPASS
+          chmod 700 "$askpass_file"
+          export SSH_ASKPASS="$askpass_file"
+          export SSH_ASKPASS_REQUIRE=force
+          export DISPLAY=profile-publish
+          export GIT_SSH_COMMAND="ssh -i $key_file -o IdentitiesOnly=yes -o BatchMode=no -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$hosts_file"
+          git remote set-url origin git@github.com:Luimya/Luimya.git
           git pull --rebase
-          git push
+          git push origin HEAD:main
