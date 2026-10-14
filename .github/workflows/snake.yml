@@ -1,4 +1,4 @@
-name: Update contribution snake
+name: Update profile visuals
 
 on:
   workflow_dispatch:
@@ -8,12 +8,13 @@ on:
     paths:
       - '.github/workflows/snake.yml'
       - 'README.md'
+      - 'scripts/update-language-cards.py'
 
 permissions:
   contents: write
 
 concurrency:
-  group: contribution-snake
+  group: profile-visuals
   cancel-in-progress: false
 
 jobs:
@@ -27,6 +28,11 @@ jobs:
         with:
           ref: ${{ github.event.repository.default_branch }}
 
+      - name: Generate horizontal language charts
+        run: python3 scripts/update-language-cards.py --username "$PROFILE_USERNAME"
+        env:
+          PROFILE_USERNAME: ${{ github.repository_owner }}
+
       - name: Generate light and dark animations
         uses: Platane/snk/svg-only@v3
         with:
@@ -37,16 +43,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Save generated animations
+      - name: Save generated profile visuals
         shell: bash
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add assets/github-contribution-grid-snake.svg assets/github-contribution-grid-snake-dark.svg
+          git add assets/languages-by-repo.svg assets/languages-by-commit.svg assets/github-contribution-grid-snake.svg assets/github-contribution-grid-snake-dark.svg
           if git diff --cached --quiet; then
-            echo 'Contribution animations are already current.'
+            echo 'Profile visuals are already current.'
             exit 0
           fi
-          git commit -m 'chore: update contribution snake'
+          git commit -m 'chore: update profile visuals'
           git pull --rebase
           git push
