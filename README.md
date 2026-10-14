@@ -9,38 +9,38 @@
 </p>
 
 <div align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Luimya&amp;theme=tokyonight" width="820" alt="Luimya 的 GitHub 贡献概览" />
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/profile-details?username=Luimya&amp;theme=tokyonight" width="820" alt="Luimya's GitHub contribution overview" />
 </div>
 
-## 常用语言 · Languages
+## Languages
 
 <div align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/repos-per-language?username=Luimya&amp;theme=tokyonight" width="400" alt="公开仓库的语言分布" />
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/most-commit-language?username=Luimya&amp;theme=tokyonight" width="400" alt="公开提交的语言分布" />
+  <img src="assets/languages-by-repo.svg" width="400" alt="Top languages by repository, shown as horizontal bars" />
+  <img src="assets/languages-by-commit.svg" width="400" alt="Top languages by commit, shown as horizontal bars" />
 </div>
 
-## 开发记录 · Activity
+## Activity
 
 <div align="center">
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=Luimya&amp;theme=tokyonight" width="400" alt="GitHub 活动统计" />
-  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=Luimya&amp;theme=tokyonight&amp;utcOffset=9" width="400" alt="提交时间分布，UTC+9" />
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/stats?username=Luimya&amp;theme=tokyonight" width="400" alt="GitHub activity statistics" />
+  <img src="https://github-profile-summary-cards.vercel.app/api/cards/productive-time?username=Luimya&amp;theme=tokyonight&amp;utcOffset=9" width="400" alt="Commits by time of day, UTC+9" />
 </div>
 
-## 访问计数 · Visits
+## Visits
 
 <div align="center">
-  <img src="https://count.getloli.com/@Luimya-github?theme=moebooru" width="400" alt="主页计数器" />
+  <img src="https://count.getloli.com/@Luimya-github?theme=moebooru" width="400" alt="Profile visit counter" />
 </div>
 
-## 贡献轨迹 · Contribution Snake
+## Contribution Snake
 
 <div align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="assets/github-contribution-grid-snake-dark.svg" />
     <source media="(prefers-color-scheme: light)" srcset="assets/github-contribution-grid-snake.svg" />
-    <img src="assets/github-contribution-grid-snake.svg" width="820" alt="Luimya 的贡献图贪吃蛇动画" />
+    <img src="assets/github-contribution-grid-snake.svg" width="820" alt="Luimya's contribution snake animation" />
   </picture>
 </div>
 
-<!-- 布局参考：https://github.com/1cyberlangke1/1cyberlangke1 -->
-<!-- 组件：vn7n24fzkq/github-profile-summary-cards、journey-ad/Moe-Counter、Platane/snk -->
+<!-- Layout inspired by https://github.com/1cyberlangke1/1cyberlangke1 -->
+<!-- Components: vn7n24fzkq/github-profile-summary-cards, journey-ad/Moe-Counter, Platane/snk -->
